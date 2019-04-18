@@ -1,0 +1,72 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.API", "src\PocketGym.API\PocketGym.API.csproj", "{16FBB360-6F62-4B58-BE83-7D93A82C74BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation", "1. Presentation", "{CD2B0072-E980-4469-AB61-D6596258E3A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Application", "2. Application", "{9F5BADAC-7E26-409C-9B9C-F6ED7FF7E477}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Application", "src\PocketGym.Application\PocketGym.Application.csproj", "{153D676F-D2A8-4C7F-89C8-464DFDA37883}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9. Test", "9. Test", "{6024CD6A-6DF0-467B-8960-4DD94FD57E19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Domain", "3. Domain", "{32A83BBB-BC9D-46A4-A687-63256A37622C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Domain", "src\PocketGym.Domain\PocketGym.Domain.csproj", "{B6F00B0F-4C6D-4D57-BC7E-7BCFA3A3F7E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Infrastructure", "4. Infrastructure", "{9C63A3DA-415D-462C-817B-8482FD6923F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Infrastructure.CrossCutting", "src\PocketGym.Infrastructure.CrossCutting\PocketGym.Infrastructure.CrossCutting.csproj", "{BA904776-A094-408E-BE4A-C3B28C43F06F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Application.Core", "src\PocketGym.Application.Core\PocketGym.Application.Core.csproj", "{0C4A697C-3F78-48A0-BB8B-46A07D09B5E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Domain.Core", "src\PocketGym.Domain.Core\PocketGym.Domain.Core.csproj", "{B91FA023-D3A5-459C-90FF-9D6F0B6AE3A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Infrastructure.Repository.LiteDb", "src\PocketGym.Infrastructure.Repository.LiteDb\PocketGym.Infrastructure.Repository.LiteDb.csproj", "{62CBBEDD-A05C-414B-A21E-8130F42B90D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16FBB360-6F62-4B58-BE83-7D93A82C74BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16FBB360-6F62-4B58-BE83-7D93A82C74BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16FBB360-6F62-4B58-BE83-7D93A82C74BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16FBB360-6F62-4B58-BE83-7D93A82C74BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{153D676F-D2A8-4C7F-89C8-464DFDA37883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{153D676F-D2A8-4C7F-89C8-464DFDA37883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{153D676F-D2A8-4C7F-89C8-464DFDA37883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{153D676F-D2A8-4C7F-89C8-464DFDA37883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F00B0F-4C6D-4D57-BC7E-7BCFA3A3F7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F00B0F-4C6D-4D57-BC7E-7BCFA3A3F7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F00B0F-4C6D-4D57-BC7E-7BCFA3A3F7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F00B0F-4C6D-4D57-BC7E-7BCFA3A3F7E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA904776-A094-408E-BE4A-C3B28C43F06F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA904776-A094-408E-BE4A-C3B28C43F06F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA904776-A094-408E-BE4A-C3B28C43F06F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA904776-A094-408E-BE4A-C3B28C43F06F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4A697C-3F78-48A0-BB8B-46A07D09B5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4A697C-3F78-48A0-BB8B-46A07D09B5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4A697C-3F78-48A0-BB8B-46A07D09B5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4A697C-3F78-48A0-BB8B-46A07D09B5E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B91FA023-D3A5-459C-90FF-9D6F0B6AE3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B91FA023-D3A5-459C-90FF-9D6F0B6AE3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B91FA023-D3A5-459C-90FF-9D6F0B6AE3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B91FA023-D3A5-459C-90FF-9D6F0B6AE3A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62CBBEDD-A05C-414B-A21E-8130F42B90D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62CBBEDD-A05C-414B-A21E-8130F42B90D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62CBBEDD-A05C-414B-A21E-8130F42B90D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62CBBEDD-A05C-414B-A21E-8130F42B90D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{16FBB360-6F62-4B58-BE83-7D93A82C74BA} = {CD2B0072-E980-4469-AB61-D6596258E3A7}
+		{153D676F-D2A8-4C7F-89C8-464DFDA37883} = {9F5BADAC-7E26-409C-9B9C-F6ED7FF7E477}
+		{B6F00B0F-4C6D-4D57-BC7E-7BCFA3A3F7E9} = {32A83BBB-BC9D-46A4-A687-63256A37622C}
+		{BA904776-A094-408E-BE4A-C3B28C43F06F} = {9C63A3DA-415D-462C-817B-8482FD6923F5}
+		{0C4A697C-3F78-48A0-BB8B-46A07D09B5E3} = {9F5BADAC-7E26-409C-9B9C-F6ED7FF7E477}
+		{B91FA023-D3A5-459C-90FF-9D6F0B6AE3A4} = {32A83BBB-BC9D-46A4-A687-63256A37622C}
+		{62CBBEDD-A05C-414B-A21E-8130F42B90D4} = {9C63A3DA-415D-462C-817B-8482FD6923F5}
+	EndGlobalSection
+EndGlobal

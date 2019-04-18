@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteDb" Version="4.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PocketGym.Domain.Core\PocketGym.Domain.Core.csproj" />
+    <ProjectReference Include="..\PocketGym.Domain\PocketGym.Domain.csproj" />
+  </ItemGroup>
+</Project>

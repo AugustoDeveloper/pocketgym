@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PocketGym.Domain\PocketGym.Domain.csproj" />
+    <ProjectReference Include="..\PocketGym.Application.Core\PocketGym.Application.Core.csproj" />
+    <ProjectReference Include="..\PocketGym.Domain.Core\PocketGym.Domain.Core.csproj" />
+    <ProjectReference Include="..\PocketGym.Infrastructure.CrossCutting\PocketGym.Infrastructure.CrossCutting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+  </ItemGroup>
+</Project>
