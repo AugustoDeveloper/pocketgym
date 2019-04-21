@@ -17,4 +17,12 @@
     <ProjectReference Include="..\PocketGym.Infrastructure.CrossCutting\PocketGym.Infrastructure.CrossCutting.csproj" />
     <ProjectReference Include="..\PocketGym.Infrastructure.Repository.LiteDb\PocketGym.Infrastructure.Repository.LiteDb.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="PocketGym.db" />
+    <None Remove="PocketGym-{0}.db" />
+    <None Remove="appsettings.Production.json" />
+  </ItemGroup>
 </Project>

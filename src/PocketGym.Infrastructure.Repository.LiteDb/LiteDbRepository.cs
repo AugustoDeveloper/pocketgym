@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LiteDB;
 using PocketGym.Domain.Core.Entities;
@@ -10,18 +11,17 @@ namespace PocketGym.Infrastructure.Repository.LiteDb
 {
     public abstract class LiteDbRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        private Lazy<LiteDatabase> lazyLiteDatabse;
+        private readonly string connectionString;
         private bool disposed;
 
-        private LiteDatabase Database => lazyLiteDatabse.Value;
-        protected LiteCollection<TEntity> Collection => Database.GetCollection<TEntity>();
+        protected LiteCollection<TEntity> Collection { get; private set; }
 
         protected LiteDbRepository(string connectionString)
         {
-            lazyLiteDatabse = new Lazy<LiteDatabase>(() => new LiteDatabase(connectionString));
+            this.connectionString = connectionString;
         }
 
-        public Task<TEntity> AddAsync(TEntity entity)
+        public virtual Task<TEntity> AddAsync(TEntity entity)
         {
             return ExecuteAsync(() =>
             {
@@ -32,7 +32,7 @@ namespace PocketGym.Infrastructure.Repository.LiteDb
             });
         }
 
-        public Task<bool> DeleteAsync(TEntity entity)
+        public virtual Task<bool> DeleteAsync(TEntity entity)
         {
             return ExecuteAsync(() =>
             {
@@ -40,17 +40,17 @@ namespace PocketGym.Infrastructure.Repository.LiteDb
             });
         }
 
-        public Task<TEntity> GetByIdAsync(long id)
+        public virtual Task<TEntity> GetByAsync(Expression<Func<TEntity, bool>> expression)
         {
-            return ExecuteAsync(() => Collection.FindById(id));
+            return ExecuteAsync(() => Collection.FindOne(expression));
         }
 
-        public Task<IEnumerable<TEntity>> LoadAllAsync()
+        public virtual Task<IEnumerable<TEntity>> LoadAllAsync()
         {
             return ExecuteAsync(() => Collection.FindAll());
         }
 
-        public Task<TEntity> UpdateAsync(TEntity entity)
+        public virtual Task<TEntity> UpdateAsync(TEntity entity)
         {
             return ExecuteAsync(() =>
             {
@@ -63,7 +63,7 @@ namespace PocketGym.Infrastructure.Repository.LiteDb
             });
         }
 
-        public Task<bool> ExistsByAsync(System.Linq.Expressions.Expression<Func<TEntity, bool>> expression)
+        public virtual Task<bool> ExistsByAsync(Expression<Func<TEntity, bool>> expression)
         {
             return ExecuteAsync(() =>
             {
@@ -71,27 +71,33 @@ namespace PocketGym.Infrastructure.Repository.LiteDb
             });
         }
 
+        public virtual Task<IEnumerable<TEntity>> LoadByAsync(Expression<Func<TEntity, bool>> expression)
+        {
+            return ExecuteAsync(() => Collection.Find(expression));
+        }
+
         protected Task<TResult> ExecuteAsync<TResult>(Func<TResult> func)
         {
-            return Task.Factory.StartNew(() =>
+            using (var database = new LiteDatabase(connectionString))
             {
                 try
                 {
+                    Collection = database.GetCollection<TEntity>();
+                    Collection.IncludeAll();
                     var result = func();
-                    return result;
+                    return Task.FromResult(result);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    return default(TResult);
+                    return Task.FromResult(default(TResult));
                 }
-            });
+            }
         }
 
         protected virtual void Dispose(bool disposing)
         {
             if (disposing && !disposed)
             {
-                Database.Dispose();
                 disposed = true;
             }
         }

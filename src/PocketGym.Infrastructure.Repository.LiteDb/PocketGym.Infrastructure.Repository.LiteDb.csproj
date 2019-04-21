@@ -12,4 +12,12 @@
     <ProjectReference Include="..\PocketGym.Domain.Core\PocketGym.Domain.Core.csproj" />
     <ProjectReference Include="..\PocketGym.Domain\PocketGym.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mapping\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>..\..\..\..\..\..\..\..\usr\local\share\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

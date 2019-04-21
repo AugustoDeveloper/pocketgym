@@ -11,7 +11,8 @@ namespace PocketGym.Domain.Repositories
     {
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);
-        Task<TEntity> GetByIdAsync(long id);
+        Task<TEntity> GetByAsync(Expression<Func<TEntity, bool>> expression);
+        Task<IEnumerable<TEntity>> LoadByAsync(Expression<Func<TEntity, bool>> expression);
         Task<IEnumerable<TEntity>> LoadAllAsync();
         Task<bool> DeleteAsync(TEntity entity);
         Task<bool> ExistsByAsync(Expression<Func<TEntity, bool>> expression);

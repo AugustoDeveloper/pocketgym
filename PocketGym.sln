@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Application", "2. Applic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGym.Application", "src\PocketGym.Application\PocketGym.Application.csproj", "{153D676F-D2A8-4C7F-89C8-464DFDA37883}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9. Test", "9. Test", "{6024CD6A-6DF0-467B-8960-4DD94FD57E19}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Test", "5. Test", "{6024CD6A-6DF0-467B-8960-4DD94FD57E19}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Domain", "3. Domain", "{32A83BBB-BC9D-46A4-A687-63256A37622C}"
 EndProject
