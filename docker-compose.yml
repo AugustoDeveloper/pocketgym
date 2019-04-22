@@ -1,0 +1,9 @@
+version: '3.6'
+
+services:
+  docker.pocket-gym.api:
+    image: pocket-gym.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:80"

@@ -23,7 +23,8 @@ namespace PocketGym.Infrastructure.Repository.LiteDb.Mapping
                         Username = "admin",
                         PasswordHash = Convert.FromBase64String(passwordHash),
                         PasswordSalt = Convert.FromBase64String(passwordSalt),
-                        Age = int.MaxValue
+                        Age = Int16.MaxValue,
+                        Role = new Role { RoleName = "Admin"}
                     }, update);
             }
             catch
