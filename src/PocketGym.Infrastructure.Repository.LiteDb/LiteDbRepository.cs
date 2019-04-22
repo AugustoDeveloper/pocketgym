@@ -78,20 +78,21 @@ namespace PocketGym.Infrastructure.Repository.LiteDb
 
         protected Task<TResult> ExecuteAsync<TResult>(Func<TResult> func)
         {
+            TResult result = default(TResult);
             using (var database = new LiteDatabase(connectionString))
             {
                 try
                 {
                     Collection = database.GetCollection<TEntity>();
                     Collection.IncludeAll();
-                    var result = func();
-                    return Task.FromResult(result);
+                    result = func();
                 }
                 catch (Exception ex)
                 {
-                    return Task.FromResult(default(TResult));
                 }
             }
+
+            return Task.FromResult(result);
         }
 
         protected virtual void Dispose(bool disposing)

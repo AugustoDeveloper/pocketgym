@@ -17,6 +17,7 @@ namespace PocketGym.Infrastructure.Repository.LiteDb.Mapping
             try
             {
                 using (var database = new LiteDatabase(connectionString))
+                {
                     CreateAdminUser(database.GetCollection<User>(), new User
                     {
                         Name = "Administrator",
@@ -24,8 +25,9 @@ namespace PocketGym.Infrastructure.Repository.LiteDb.Mapping
                         PasswordHash = Convert.FromBase64String(passwordHash),
                         PasswordSalt = Convert.FromBase64String(passwordSalt),
                         Age = Int16.MaxValue,
-                        Role = new Role { RoleName = "Admin"}
+                        Role = new Role { RoleName = "Admin" }
                     }, update);
+                }
             }
             catch
             { }
