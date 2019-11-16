@@ -1,0 +1,21 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+    name: pocketgym-api-deployment
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: pocketgym
+                name: pocketgym-api-pod
+        spec:
+            containers:
+                - name: pocketgym-api-container
+                  image: gcr.io/pocketgym-37a67/pocketgym.api:v1
+
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                    - containerPort: 80
+            imagePullSecrets:
+                - name: gcr-json-key 

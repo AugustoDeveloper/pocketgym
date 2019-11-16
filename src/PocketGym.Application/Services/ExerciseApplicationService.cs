@@ -14,51 +14,81 @@ namespace PocketGym.Application.Services
 {
     public class ExerciseApplicationService : BaseService<ExerciseDto>, IExerciseApplicationService
     {
-        private readonly IExerciseRepository exerciseRepository;
-        public ExerciseApplicationService(IExerciseRepository exerciseRepository, IMapper mapper) : base(mapper)
+        private readonly IUserRepository repository;
+        public ExerciseApplicationService(IUserRepository repository, IMapper mapper) : base(mapper)
         {
-            this.exerciseRepository = exerciseRepository;
-            RegisterDisposable(exerciseRepository);
+            this.repository = repository;
         }
 
-        public async Task<ExerciseDto> AddAsync(ExerciseDto exercise)
+        public async Task<ExerciseDto> AddAsync(string userId, string serieId, ExerciseDto exercise)
         {
-            if (await exerciseRepository.ExistsByAsync(e => e.Name == exercise.Name))
-            {
-                throw new ValueAlreadyRegisteredException(exercise.Name);
-            }
+            var user = await repository.GetByAsync(u => u.Id == userId);
+            var userSerie = user.Series.FirstOrDefault(s => s.Id == serieId);
 
-            var exerciseEntity = exercise.ToEntity<Exercise>(Mapper);
-            exerciseEntity = await exerciseRepository.AddAsync(exerciseEntity);
-            return exerciseEntity.ToDto<ExerciseDto>(Mapper);
+            var exerciseToUpdate = exercise.ToEntity<Exercise>(Mapper);
+            exerciseToUpdate.Id = repository.GenerateId();
+
+            userSerie.Exercises.Add(exerciseToUpdate);
+
+            await repository.UpdateAsync(user);
+
+            return exerciseToUpdate.ToDto<ExerciseDto>(Mapper);
         }
 
-        public Task<bool> DeleteAsync(ExerciseDto exercise)
+        public async Task<bool> DeleteByAsync(string userId, string serieId, string id)
         {
-            return exerciseRepository.DeleteAsync(exercise.ToEntity<Exercise>(Mapper));
+            var user = await repository.GetByAsync(u => u.Id == userId);
+            var userSerie = user.Series.FirstOrDefault(s => s.Id == serieId);
+
+            var exerciseSerieToRemove = userSerie.Exercises.FirstOrDefault(es => es.Id == id);
+            userSerie.Exercises.Remove(exerciseSerieToRemove);
+
+            await repository.UpdateAsync(user);
+
+            return true;
         }
 
-        public async Task<ExerciseDto> GetByIdAsync(long id)
+        public async Task<ExerciseDto> GetByIdAsync(string userId, string serieId, string id)
         {
-            var exerciseEntity = await exerciseRepository.GetByAsync(e => e.Id == id);
-            return exerciseEntity.ToDto<ExerciseDto>(Mapper);
-        }
+            var user = await repository.GetByAsync(u => u.Id == userId);
+            var userSerie = user.Series.FirstOrDefault(s => s.Id == serieId);
 
-        public async Task<IEnumerable<ExerciseDto>> LoadAllAsync()
-        {
-            var list = await exerciseRepository.LoadAllAsync();
-            if (list == null)
+            var exerciseSerie = userSerie.Exercises.FirstOrDefault(es => es.Id == id);
+
+            if (exerciseSerie == null)
             {
                 return null;
             }
 
-            return list.Select(e => e.ToDto<ExerciseDto>(Mapper)).ToList();
+            return exerciseSerie.ToDto<ExerciseDto>(Mapper);
         }
 
-        public async Task<ExerciseDto> UpdateAsync(ExerciseDto exercise)
+        public async Task<IEnumerable<ExerciseDto>> LoadAllAsync(string userId, string serieId)
         {
-            var serieEntity = await exerciseRepository.UpdateAsync(exercise.ToEntity<Exercise>(Mapper));
-            return serieEntity.ToDto<ExerciseDto>(Mapper);
+            var user = await repository.GetByAsync(u => u.Id == userId);
+            var userSerie = user.Series.FirstOrDefault(s => s.Id == serieId);
+            var list = userSerie.Exercises.Select(s => s.ToDto<ExerciseDto>(Mapper)).ToList();
+            return list;
+        }
+
+        public async Task<ExerciseDto> UpdateAsync(string userId, string serieId, ExerciseDto exercise)
+        {
+            var user = await repository.GetByAsync(u => u.Id == userId);
+            var userSerie = user.Series.FirstOrDefault(s => s.Id == serieId);
+
+            var exerciseRegistered = userSerie.Exercises.FirstOrDefault(e => e.Id == exercise.Id);
+            if (exerciseRegistered == null)
+            {
+                return null;
+            }
+            exerciseRegistered.Name = exercise.Name;
+            exerciseRegistered.NumberOfRepetitions = exercise.NumberOfRepetitions;
+            exerciseRegistered.NumberOfExerciseRepetitions = exercise.NumberOfExerciseRepetitions;
+            exerciseRegistered.RestTimeInSeconds = exercise.RestTimeInSeconds;
+            
+            await repository.UpdateAsync(user);
+
+            return exerciseRegistered.ToDto<ExerciseDto>(Mapper);
         }
     }
 }

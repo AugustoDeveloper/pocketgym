@@ -7,9 +7,9 @@ namespace PocketGym.Application.Services
 {
     public interface IUserApplicationService : IApplicationService<UserDto>
     {
-        Task<UserDto> CreateUserAsync(UserDto user, string roleName = "user");
-        Task<UserDto> GetUserByIdAsync(long id);
-        Task<UserDto> AuthenticateAsync(LoginDto login);
-        Task<RoleDto> GetRoleAsync(UserDto user);
+        Task<UserDto> CreateUserAsync(UserDto user);
+        Task<UserDto> GetUserByIdAsync(string id);
+        Task AuthenticateAsync(LoginDto login);
+        Task<UserDto> UpdateAsync(UserDto user);
     }
 }

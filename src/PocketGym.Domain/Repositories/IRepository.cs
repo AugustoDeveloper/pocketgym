@@ -14,7 +14,8 @@ namespace PocketGym.Domain.Repositories
         Task<TEntity> GetByAsync(Expression<Func<TEntity, bool>> expression);
         Task<IEnumerable<TEntity>> LoadByAsync(Expression<Func<TEntity, bool>> expression);
         Task<IEnumerable<TEntity>> LoadAllAsync();
-        Task<bool> DeleteAsync(TEntity entity);
+        Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> expression);
         Task<bool> ExistsByAsync(Expression<Func<TEntity, bool>> expression);
+        string GenerateId();
     }
 }

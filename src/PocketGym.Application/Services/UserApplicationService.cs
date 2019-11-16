@@ -1,101 +1,98 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using PocketGym.Application.Core.Dtos;
 using PocketGym.Application.Exceptions;
+using PocketGym.Application.Extensions;
 using PocketGym.Application.Services.Bases;
 using PocketGym.Domain.Core.Entities;
 using PocketGym.Domain.Repositories;
 using PocketGym.Infrastructure.CrossCutting.Mappings;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PocketGym.Application.Services
 {
     public class UserApplicationService : BaseService<UserDto>, IUserApplicationService
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository repository;
 
         public UserApplicationService(IUserRepository userRepository, IMapper mapper) : base(mapper)
         {
-            this.userRepository = userRepository;
-            RegisterDisposable(userRepository);
+            this.repository = userRepository;
         }
 
-        public async Task<UserDto> AuthenticateAsync(LoginDto login)
+        public async Task AuthenticateAsync(LoginDto login)
         {
-            var existsUser = await userRepository.GetByAsync(u => u.Username == login.Username);
-            if (existsUser == null)
+            var registereUser = await repository.GetByAsync(u => u.Username == login.Username);
+            if (registereUser == null)
             {
-                return null;
+                throw new ArgumentNullException();
             }
 
-            if (!this.VerifyPasswordHash(login.Password, existsUser.PasswordHash, existsUser.PasswordSalt))
-            {
-                return null;
-            }
+            login.Authenticate(registereUser.PasswordHash, registereUser.PasswordSalt);
 
-            return existsUser.ToDto<UserDto>(Mapper);
+            if (registereUser.Roles.Count == 0)
+            {
+                registereUser.Roles.Add(new Role { RoleName = "User" });
+                await repository.UpdateAsync(registereUser);
+            }
+            login.Roles = registereUser.Roles.Select(r => new RoleDto { RoleName = r.RoleName }).ToArray();
+            login.UserId = registereUser.Id;
+            login.Password = null;
         }
 
-        public async Task<UserDto> CreateUserAsync(UserDto user, string roleName = "User")
+        public async Task<UserDto> CreateUserAsync(UserDto user)
         {
+            user.ValidateToInsert();
+
             var password = user.Password;
             user.Password = null;
 
-            if (await userRepository.ExistsByAsync(u => u.Username == user.Username))
+            if (await repository.ExistsByAsync(u => u.Username == user.Username))
             {
                 throw new ValueAlreadyRegisteredException(user.Username);
             }
 
             var entityUser = user.ToEntity<User>(Mapper);
-            entityUser.Role = new Role { RoleName = roleName };
+            entityUser.Roles.Add(new Role { RoleName = "User" });
 
-            var hmac = this.CreatePasswordHash(password);
+            var hmac = AuthenticationExtension.Encrypt(password);
             entityUser.PasswordSalt = hmac.PasswordSalt;
             entityUser.PasswordHash = hmac.PasswordHash;
 
-            entityUser = await userRepository.AddAsync(entityUser);
+            entityUser = await repository.AddAsync(entityUser);
 
             return entityUser.ToDto<UserDto>(Mapper);
         }
 
-        public async Task<UserDto> GetUserByIdAsync(long id)
+        public async Task<UserDto> GetUserByIdAsync(string id)
         {
-            var entityUser = await userRepository.GetByAsync(u => u.Id == id);
+            var entityUser = await repository.GetByAsync(u => u.Id == id);
 
             return entityUser.ToDto<UserDto>(Mapper);
-        }
+        }        
 
-        protected (byte[] PasswordHash, byte[] PasswordSalt) CreatePasswordHash(string password)
+        public async Task<UserDto> UpdateAsync(UserDto user)
         {
-            using (var hmac = new HMACSHA512())
+            var registeredUser = await repository.GetByAsync(u => u.Id == user.Id);
+            if (registeredUser == null)
             {
-                return (hmac.Key, hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
+                return null;
             }
+
+            registeredUser.Name = user.Name;
+            registeredUser.Age = user.Age;
+
+            var updatedUser = await repository.UpdateAsync(registeredUser);
+            return updatedUser.ToDto<UserDto>(Mapper);
         }
 
-        protected bool VerifyPasswordHash(string password, byte[] hash, byte[] salt)
+        protected override void Dispose(bool disposing)
         {
-            using (var hmac = new HMACSHA512(salt))
+            if (disposing && !Disposed)
             {
-                byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] == hash[i])
-                    {
-                        return false;
-                    }
-                }
-                return true;
+                repository.Dispose();
             }
-        }
-
-        public async Task<RoleDto> GetRoleAsync(UserDto user)
-        {
-            var userEntity = await userRepository.GetByAsync(u => u.Id == user.Id);
-            return new RoleDto { RoleName = userEntity.Role.RoleName };
         }
     }
 }

@@ -1,29 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <DockerComposeProjectPath>../../docker-compose.dcproj</DockerComposeProjectPath>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PocketGym.Application\PocketGym.Application.csproj" />
     <ProjectReference Include="..\PocketGym.Application.Core\PocketGym.Application.Core.csproj" />
-    <ProjectReference Include="..\PocketGym.Infrastructure.CrossCutting\PocketGym.Infrastructure.CrossCutting.csproj" />
-    <ProjectReference Include="..\PocketGym.Infrastructure.Repository.LiteDb\PocketGym.Infrastructure.Repository.LiteDb.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configurations\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="PocketGym.db" />
-    <None Remove="PocketGym-{0}.db" />
-    <None Remove="appsettings.Production.json" />
+    <ProjectReference Include="..\PocketGym.Infrastructure.Repository.RavenDb\PocketGym.Infrastructure.Repository.RavenDb.csproj" />
   </ItemGroup>
 </Project>

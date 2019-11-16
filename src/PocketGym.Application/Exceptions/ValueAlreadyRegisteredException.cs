@@ -2,8 +2,14 @@
 
 namespace PocketGym.Application.Exceptions
 {
-    public class ValueAlreadyRegisteredException : Exception
+    public class ValueAlreadyRegisteredException : ApplicationException
     {
-        public ValueAlreadyRegisteredException(string value) : base($"The {value} is already registered") { }
+        public ValueAlreadyRegisteredException(string value) : base($"The {value} is already registered", null) { }
+
+        public override object ToResult()
+            => new
+            {
+                reason = this.Reason
+            };
     }
 }

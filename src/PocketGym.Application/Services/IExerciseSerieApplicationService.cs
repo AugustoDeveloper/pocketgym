@@ -5,12 +5,12 @@ using PocketGym.Application.Services.Bases;
 
 namespace PocketGym.Application.Services
 {
-    public interface IExerciseSerieApplicationService : IApplicationService<ExerciseSerieDto>
+    public interface IExerciseSerieApplicationService : IApplicationService<ExerciseDto>
     {
-        Task<IEnumerable<ExerciseSerieDto>> LoadAllBySerieAsync(SerieDto serie);
-        Task<ExerciseSerieDto> GetByIdAsync(SerieDto serie, long id);
-        Task<bool> DeleteByIdAsync(SerieDto serie, long id);
-        Task<ExerciseSerieDto> UpdateAsync(SerieDto serie, ExerciseSerieDto exerciseSerieDto);
-        Task<ExerciseSerieDto> AddAsync(SerieDto serie, ExerciseSerieDto exerciseSerieDto);
+        Task<IEnumerable<ExerciseDto>> LoadAllBySerieAsync(string userId, string serieId);
+        Task<ExerciseDto> GetByIdAsync(string userId, string serieId, string id);
+        Task<bool> DeleteByIdAsync(string userId, string serieId, string id);
+        Task<ExerciseDto> UpdateAsync(string userId, string serieId, ExerciseDto exerciseSerieDto);
+        Task<ExerciseDto> AddAsync(string userId, string serieId, ExerciseDto exerciseSerieDto);
     }
 }

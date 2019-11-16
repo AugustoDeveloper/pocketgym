@@ -2,8 +2,8 @@
 {
     public class SerieDto : IDataTransferObject
     {
-        public long Id { get; set; }
-        public long UserId { get; set; }
-        public string Name { get; set; }
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public int RestTimeBetweenExercisesInSeconds { get; set; }
     }
 }

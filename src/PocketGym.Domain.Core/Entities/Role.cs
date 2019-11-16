@@ -1,4 +1,6 @@
-﻿namespace PocketGym.Domain.Core.Entities
+﻿using System;
+
+namespace PocketGym.Domain.Core.Entities
 {
     public class Role
     {

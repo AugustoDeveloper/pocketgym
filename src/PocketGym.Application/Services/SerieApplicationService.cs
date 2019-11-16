@@ -13,57 +13,74 @@ namespace PocketGym.Application.Services
 {
     public class SerieApplicationService : BaseService<SerieDto>, ISerieApplicationService
     {
-        private readonly ISerieRepository serieRepository;
+        private readonly IUserRepository userRepository;
 
-        public SerieApplicationService(ISerieRepository serieRepository, IMapper mapper) : base(mapper)
+        public SerieApplicationService(IUserRepository userRepository, IMapper mapper) : base(mapper)
         {
-            this.serieRepository = serieRepository;
-            RegisterDisposable(serieRepository);
+            this.userRepository = userRepository;
         }
 
-        public async Task<SerieDto> AddAsync(SerieDto serie)
+        public async Task<SerieDto> AddAsync(string userId, SerieDto serie)
         {
-            if (await serieRepository.ExistsByAsync(s => s.Name == serie.Name))
+            var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
+
+            if (registeredUser.Series.Any(s => s.Id == serie.Id))
             {
-                throw new ValueAlreadyRegisteredException(serie.Name);
+                throw new ValueAlreadyRegisteredException(serie.Id);
             }
 
             var serieEntity = serie.ToEntity<Serie>(Mapper);
-            serieEntity = await serieRepository.AddAsync(serieEntity);
+            registeredUser.Series.Add(serieEntity);
+            await userRepository.UpdateAsync(registeredUser);
             return serieEntity.ToDto<SerieDto>(Mapper);
         }
 
-        public Task<bool> DeleteAsync(SerieDto serie)
+        public async Task<bool> DeleteAsync(string userId, string id)
         {
-            return serieRepository.DeleteAsync(serie.ToEntity<Serie>(Mapper));
+            var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
+
+            var serieToRemove = registeredUser.Series.FirstOrDefault(s => s.Id == id);
+            
+            if (serieToRemove == null)
+            {
+                return false;
+            }
+
+            registeredUser.Series.Remove(serieToRemove);
+
+            await userRepository.UpdateAsync(registeredUser);
+
+            return true;
         }
 
-        public async Task<SerieDto> GetByIdAsync(long id)
+        public async Task<SerieDto> GetByIdAsync(string userId, string serieId)
         {
-            var serieEntity = await serieRepository.GetByAsync(s => s.Id == id);
-            return serieEntity.ToDto<SerieDto>(Mapper);
+            var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
+            return registeredUser.Series.FirstOrDefault(s => s.Id == serieId).ToDto<SerieDto>(Mapper);
         }
 
-        public async Task<IEnumerable<SerieDto>> LoadAllByUserIdAsync(long currentUserId)
+        public async Task<IEnumerable<SerieDto>> LoadAllByUserIdAsync(string currentUserId)
         {
-            var list = await serieRepository.LoadByAsync(s => s.UserId == currentUserId);
-            if (list == null)
+            var registeredUser = await userRepository.GetByAsync(u => u.Id == currentUserId);
+            return registeredUser.Series.Select(s => s.ToDto<SerieDto>(Mapper)).ToArray();
+        }
+
+        public async Task<SerieDto> UpdateAsync(string userId, SerieDto serie)
+        {
+            var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
+
+            var serieToUpdate = registeredUser.Series.FirstOrDefault(s => s.Id == serie.Id);
+
+            if (serieToUpdate == null)
             {
                 return null;
             }
 
-            return list.Select(s => s.ToDto<SerieDto>(Mapper)).ToList();
-        }
+            serieToUpdate.Title = serie.Title;
+            serieToUpdate.RestTimeBetweenExercisesInSeconds = serie.RestTimeBetweenExercisesInSeconds;
+            await userRepository.UpdateAsync(registeredUser);
 
-        public async Task<SerieDto> UpdateAsync(SerieDto serie)
-        {
-            if (await serieRepository.ExistsByAsync(s => s.Name == serie.Name))
-            {
-                throw new ValueAlreadyRegisteredException(serie.Name);
-            }
-
-            var serieEntity = await serieRepository.UpdateAsync(serie.ToEntity<Serie>(Mapper));
-            return serieEntity.ToDto<SerieDto>(Mapper);
+            return serieToUpdate.ToDto<SerieDto>(Mapper);
         }
     }
 }

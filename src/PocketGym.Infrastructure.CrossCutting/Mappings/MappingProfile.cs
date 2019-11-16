@@ -11,28 +11,16 @@ namespace PocketGym.Infrastructure.CrossCutting.Mappings
         {
             CreateMap<UserDto, User>()
                 .ForMember(u => u.PasswordHash, options => options.Ignore())
-                .ForMember(u => u.PasswordSalt, options => options.Ignore())
-                .ForMember(u => u.Role, options => options.Ignore());
+                .ForMember(u => u.PasswordSalt, options => options.Ignore());
             CreateMap<User, UserDto>()
                 .ForMember(u => u.Password, options => options.Ignore());
 
             CreateMap<Exercise, ExerciseDto>();
             CreateMap<ExerciseDto, Exercise>();
 
-            CreateMap<ExerciseSerie, ExerciseSerieDto>()
-                .ForMember(es => es.Exercises,
-                    options => options.MapFrom(
-                        src => src.Exercises)
-                );
-            CreateMap<ExerciseSerieDto, ExerciseSerie>()
-                .ForMember(es => es.Exercises,
-                    options => options.MapFrom(
-                        src => src.Exercises)
-                );
-
             CreateMap<Serie, SerieDto>();
             CreateMap<SerieDto, Serie>()
-                .ForMember(s => s.ExercisesSeries, options => options.Ignore());
+                .ForMember(s => s.Exercises, options => options.Ignore());
         }
     }
 }
