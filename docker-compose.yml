@@ -3,7 +3,13 @@ version: '3.6'
 services:
   docker.pocket-gym.api:
     image: pocket-gym.api
+    build:
+      dockerfile: Dockerfile
+      context: .
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Auth:Secret=2cf811a30a5c4a8bbfac4f7c21171c12
+      - ConnectionStrings:PocketGymDb:String=mongodb+srv://pocketgym-api-user:1OYqB1ChrjjpjT6C@clusterpocketgym-j7w6r.gcp.mongodb.net/test?retryWrites=true&w=majority
+      - ConnectionStrings:PocketGymDb:DatabaseName=domain
     ports:
       - "5000:80"

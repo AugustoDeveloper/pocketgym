@@ -15,8 +15,8 @@ using PocketGym.API.Auth;
 using PocketGym.Application.Services;
 using PocketGym.Domain.Repositories;
 using PocketGym.Infrastructure.CrossCutting.Mappings;
-using PocketGym.Infrastructure.Repository.RavenDb;
-using PocketGym.Infrastructure.Repository.RavenDb.Extensions;
+using PocketGym.Infrastructure.Repository.MongoDb;
+using PocketGym.Infrastructure.Repository.MongoDb.Extensions;
 
 namespace PocketGym.API
 {
@@ -38,7 +38,7 @@ namespace PocketGym.API
             services.AddTransient<IExerciseApplicationService, ExerciseApplicationService>();
             
             services.AddAutoMapper(typeof(MappingProfile));
-            services.InitializeRavenDb(Configuration);
+            services.InitializeMongoDb(Configuration);
             services.AddBearerTokenValidation(Configuration["Auth:Secret"]);
         }
 
@@ -50,8 +50,6 @@ namespace PocketGym.API
                 app.UseDeveloperExceptionPage();
             }
 
-
-            
             app.UseRouting();
             app.UseCors(x => x
                 .AllowAnyOrigin()
@@ -60,6 +58,7 @@ namespace PocketGym.API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            Console.WriteLine(Environment.GetEnvironmentVariable("Auth:Secret"));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
