@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: -e Auth:Secret=$Auth_Secret -e ConnectionStrings:PocketGymDb:String=$ConnectionStrings_PocketGymDb_DatabaseName -e ConnectionStrings:PocketGymDb:DatabaseName=$ConnectionStrings_PocketGymDb_String ASPNETCORE_URLS=http://*:$PORT PocketGym.API 
+  web: ASPNETCORE_URLS=http://*:$PORT PocketGym.API -e Auth:Secret=$Auth_Secret -e ConnectionStrings:PocketGymDb:String=$ConnectionStrings_PocketGymDb_DatabaseName -e ConnectionStrings:PocketGymDb:DatabaseName=$ConnectionStrings_PocketGymDb_String 
