@@ -29,7 +29,7 @@ namespace PocketGym.API
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            builder.AddEnvironmentVariables("PocketGym.");
+            builder.AddEnvironmentVariables("PocketGym_");
             Configuration = builder.Build();
             Configuration.AsEnumerable().ToList().ForEach(c => Console.WriteLine($"{c.Key}=>{c.Value}"));
             Console.WriteLine("->"+Configuration["Auth:Secret"]);
