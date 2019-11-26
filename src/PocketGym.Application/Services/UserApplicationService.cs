@@ -30,6 +30,8 @@ namespace PocketGym.Application.Services
             }
 
             login.Authenticate(registereUser.PasswordHash, registereUser.PasswordSalt);
+            login.Password = null;
+            login.UserId = registereUser.Id;
 
             if (registereUser.Roles.Count == 0)
             {
@@ -37,8 +39,7 @@ namespace PocketGym.Application.Services
                 await repository.UpdateAsync(registereUser);
             }
             login.Roles = registereUser.Roles.Select(r => new RoleDto { RoleName = r.RoleName }).ToArray();
-            login.UserId = registereUser.Id;
-            login.Password = null;
+            login.Created = DateTime.UtcNow;
         }
 
         public async Task<UserDto> CreateUserAsync(UserDto user)

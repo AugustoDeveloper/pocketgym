@@ -31,8 +31,8 @@ namespace PocketGym.API.Auth
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            login.Token = tokenHandler.WriteToken(token);
-            login.ExpirationDate = token.ValidTo;
+            login.AccessToken = tokenHandler.WriteToken(token);
+            login.Expiration = token.ValidTo;
 
         }
 
