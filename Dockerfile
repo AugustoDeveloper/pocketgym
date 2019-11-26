@@ -11,5 +11,6 @@ RUN dotnet publish PocketGym.API.csproj -c Release -o /app -r alpine-x64
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app .
-CMD ASPNETCORE_URLS=http://*:$PORT ./PocketGym.API
+RUN chmod 777 .
+CMD ASPNETCORE_URLS=http://*:$PORT PocketGym.API
 #CMD ["./PocketGym.API"]
