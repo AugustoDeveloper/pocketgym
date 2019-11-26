@@ -36,7 +36,7 @@ namespace PocketGym.Infrastructure.Repository.MongoDb.Extensions
                 cm.SetIgnoreExtraElements(true);
             });
 
-            serviceCollection.AddTransient<IUserRepository>(v => new UserRepository(configuration["ConnectionStrings:PocketGymDb:String"], configuration["ConnectionStrings:PocketGymDb:DatabaseName"], "users"));
+            serviceCollection.AddTransient<IUserRepository>(v => new UserRepository(configuration["MongoDb:ConnectionString"], configuration["MongoDb:DatabaseName"], "users"));
         }
     }
 }

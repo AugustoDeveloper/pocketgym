@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
-ENV ASPNETCORE_URL http://*:80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 COPY . .
@@ -13,4 +12,3 @@ WORKDIR /app
 COPY --from=build /app .
 
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet PocketGym.API.dll
-#CMD ["./PocketGym.API"]

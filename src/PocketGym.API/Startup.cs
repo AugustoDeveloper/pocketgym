@@ -22,9 +22,19 @@ namespace PocketGym.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            builder.AddEnvironmentVariables("PocketGym.");
+            Configuration = builder.Build();
+            Configuration.AsEnumerable().ToList().ForEach(c => Console.WriteLine($"{c.Key}=>{c.Value}"));
+            Console.WriteLine("->"+Configuration["Auth:Secret"]);
+            Console.WriteLine("->"+Configuration["MongoDb:ConnectionString"]);
+            Console.WriteLine("->"+Configuration["MongoDb:DatabaseName"]);
         }
 
         public IConfiguration Configuration { get; }
@@ -39,7 +49,7 @@ namespace PocketGym.API
             
             services.AddAutoMapper(typeof(MappingProfile));
             services.InitializeMongoDb(Configuration);
-            services.AddBearerTokenValidation(Configuration["Auth:Secret"]);
+            services.AddBearerTokenValidation(Configuration["Auth_Secret"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +68,6 @@ namespace PocketGym.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            Console.WriteLine(Environment.GetEnvironmentVariable("Auth:Secret"));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

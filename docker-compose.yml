@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   docker.pocket-gym.api:
-    image: pocket-gym.api
+    image: pocket-gym
     build:
       dockerfile: Dockerfile
       context: .
