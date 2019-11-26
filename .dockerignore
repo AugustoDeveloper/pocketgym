@@ -1,0 +1,22 @@
+bin/
+obj/
+out/
+TestResults/
+tools/
+
+# GIT 
+.git/
+.gitignirore
+
+#DOCKER
+.Dockerfile
+.Dockerfile.swp
+docker-compose.yml
+
+#HEROKU
+heroku.yml
+
+#OTHERS
+.vs
+.DS_STORE
+

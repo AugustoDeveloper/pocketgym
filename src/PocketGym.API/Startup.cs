@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using PocketGym.API.Auth;
 using PocketGym.Application.Services;
 using PocketGym.Domain.Repositories;
@@ -31,10 +32,6 @@ namespace PocketGym.API
 
             builder.AddEnvironmentVariables("PocketGym_");
             Configuration = builder.Build();
-            Configuration.AsEnumerable().ToList().ForEach(c => Console.WriteLine($"{c.Key}=>{c.Value}"));
-            Console.WriteLine("->"+Configuration["Auth:Secret"]);
-            Console.WriteLine("->"+Configuration["MongoDb:ConnectionString"]);
-            Console.WriteLine("->"+Configuration["MongoDb:DatabaseName"]);
         }
 
         public IConfiguration Configuration { get; }
@@ -42,14 +39,17 @@ namespace PocketGym.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(n => n.SerializerSettings.ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new SnakeCaseNamingStrategy()
+            });
             services.AddTransient<IUserApplicationService, UserApplicationService>();
             services.AddTransient<ISerieApplicationService, SerieApplicationService>();
             services.AddTransient<IExerciseApplicationService, ExerciseApplicationService>();
             
             services.AddAutoMapper(typeof(MappingProfile));
             services.InitializeMongoDb(Configuration);
-            services.AddBearerTokenValidation(Configuration["Auth_Secret"]);
+            services.AddBearerTokenValidation(Configuration["Auth:Secret"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
