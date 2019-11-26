@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: bundle exec puma -c config/puma.rb -e Auth:Secret=$Auth_Secret -e ConnectionStrings:PocketGymDb:String=$ConnectionStrings_PocketGymDb_DatabaseName -e ConnectionStrings:PocketGymDb:DatabaseName=$ConnectionStrings_PocketGymDb_String
+  web: -e Auth:Secret=$Auth_Secret -e ConnectionStrings:PocketGymDb:String=$ConnectionStrings_PocketGymDb_DatabaseName -e ConnectionStrings:PocketGymDb:DatabaseName=$ConnectionStrings_PocketGymDb_String
