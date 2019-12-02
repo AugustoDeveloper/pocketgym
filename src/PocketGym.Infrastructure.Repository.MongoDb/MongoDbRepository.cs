@@ -81,5 +81,10 @@ namespace PocketGym.Infrastructure.Repository.MongoDb
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public void TestConnection()
+        {
+            var collenction = Collection;
+        }
     }
 }
