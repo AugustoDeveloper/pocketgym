@@ -83,6 +83,10 @@ namespace PocketGym.Application.Services
 
             registeredUser.Name = user.Name;
             registeredUser.Age = user.Age;
+            registeredUser.Weight = user.Weight;
+            registeredUser.Height = user.Height;
+            registeredUser.WorkoutSince = user.WorkoutSince;
+            registeredUser.Gender = user.Gender;
 
             var updatedUser = await repository.UpdateAsync(registeredUser);
             return updatedUser.ToDto<UserDto>(Mapper);
