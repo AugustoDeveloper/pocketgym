@@ -1,5 +1,5 @@
 build:
   docker:
-    web: Dockerfile
+    web: Dockerfile.heroku
 run:
   web: ASPNETCORE_URLS=http://*:$PORT dotnet PocketGym.API.dll
