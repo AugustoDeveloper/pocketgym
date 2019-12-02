@@ -36,6 +36,7 @@ namespace PocketGym.API.Controllers.v1
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return Problem("Something is not right, calm down calm down! We're working to fix...(I hope so!");
             }
         }
@@ -85,6 +86,7 @@ namespace PocketGym.API.Controllers.v1
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return Problem("Something is not right, calm down calm down! We're working to fix...(I hope so!");
             }
         }
@@ -112,6 +114,7 @@ namespace PocketGym.API.Controllers.v1
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return Problem("Something is not right, calm down calm down! We're working to fix...(I hope so!");
             }
         }
