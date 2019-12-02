@@ -7,7 +7,11 @@ using PocketGym.Domain.Core.Entities;
 
 namespace PocketGym.Domain.Repositories
 {
-    public interface IRepository<TEntity> : IDisposable where TEntity : class, IEntity
+    public interface IRepository : IDisposable 
+    {
+        void TestConnection();
+     }
+    public interface IRepository<TEntity> : IRepository where TEntity : class, IEntity
     {
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);
