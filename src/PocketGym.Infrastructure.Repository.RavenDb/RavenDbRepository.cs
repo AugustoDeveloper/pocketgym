@@ -81,5 +81,10 @@ namespace PocketGym.Infrastructure.Repository.RavenDb
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public void TestConnection()
+        {
+            Session.Query<TEntity>().FirstOrDefaultAsync().GetAwaiter().GetResult();
+        }
     }
 }

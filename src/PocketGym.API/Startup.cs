@@ -46,6 +46,7 @@ namespace PocketGym.API
             services.AddTransient<IUserApplicationService, UserApplicationService>();
             services.AddTransient<ISerieApplicationService, SerieApplicationService>();
             services.AddTransient<IExerciseApplicationService, ExerciseApplicationService>();
+            services.AddTransient<IHealthCheckApplicationService, HealthCheckApplicationService>();
             
             services.AddAutoMapper(typeof(MappingProfile));
             services.InitializeMongoDb(Configuration);

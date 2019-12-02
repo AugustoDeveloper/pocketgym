@@ -1,8 +1,10 @@
-﻿namespace PocketGym.Application.Services
+﻿using PocketGym.Application.Core.Dtos;
+
+namespace PocketGym.Application.Services
 {
     public interface IHealthCheckApplicationService
     {
         bool Check();
-        string GetDetails();
+        HealthDto GetDetails();
     }
 }
