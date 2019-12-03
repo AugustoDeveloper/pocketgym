@@ -43,10 +43,11 @@ namespace PocketGym.API
             {
                 NamingStrategy = new SnakeCaseNamingStrategy()
             });
-            services.AddTransient<IUserApplicationService, UserApplicationService>();
-            services.AddTransient<ISerieApplicationService, SerieApplicationService>();
-            services.AddTransient<IExerciseApplicationService, ExerciseApplicationService>();
-            services.AddTransient<IHealthCheckApplicationService, HealthCheckApplicationService>();
+            services.AddScoped<IUserApplicationService, UserApplicationService>();
+            services.AddScoped<ISerieApplicationService, SerieApplicationService>();
+            services.AddScoped<IExerciseStepApplicationService, ExerciseStepApplicationService>();
+            services.AddScoped<ITargetApplicationService, TargetApplicationService>();
+            services.AddScoped<IHealthCheckApplicationService, HealthCheckApplicationService>();
             
             services.AddAutoMapper(typeof(MappingProfile));
             services.InitializeMongoDb(Configuration);

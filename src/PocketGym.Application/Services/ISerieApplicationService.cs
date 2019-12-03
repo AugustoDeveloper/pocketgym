@@ -8,10 +8,9 @@ namespace PocketGym.Application.Services
 {
     public interface ISerieApplicationService : IApplicationService<SerieDto>
     {
-        Task<SerieDto> AddAsync(string userId, SerieDto serie);
-        Task<SerieDto> GetByIdAsync(string userId, string serieId);
-        Task<SerieDto> UpdateAsync(string userId, SerieDto serie);
-        Task<bool> DeleteAsync(string userId, string id);
-        Task<IEnumerable<SerieDto>> LoadAllByUserIdAsync(string currentUserId);
+        Task<SerieDto> AddAsync(string userId, string targetId, SerieDto serie);
+        Task<SerieDto> GetByIdAsync(string userId, string targetId, string serieId);
+        Task<bool> DeleteAsync(string userId, string targetId, string id);
+        Task<IEnumerable<SerieDto>> LoadAllByUserIdAsync(string currentUserId, string targetId);
     }
 }

@@ -16,6 +16,7 @@ namespace PocketGym.Domain.Core.Entities
         public string Gender { get; set; }
         public DateTime WorkoutSince { get; set; }
         public List<Role> Roles { get; set; } = new List<Role>();
-        public List<Serie> Series { get; set; } = new List<Serie>();
+        public string CurrentTargetId { get; set; }
+        public List<Target> Targets { get; set; } = new List<Target>(3);
     }
 }
