@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PocketGym.API.Controllers.v1
 {
     [Authorize(Roles = "User,Admin"), ApiController, Route("api/v1/user")]
-    public class ExerciseController : ControllerBase
+    public class ExerciseStepController : ControllerBase
     {
         [HttpPost("{userId}/target/{targetId}/serie/{serieId}/exercise/single")]
         public Task<IActionResult> AddSingleExerciseStepAsync(
@@ -53,7 +53,7 @@ namespace PocketGym.API.Controllers.v1
             try
             {
                 var registeredExercise = await service.AddAsync(userId, targetId, serieId, exercise);
-                return CreatedAtRoute(nameof(GetExerciseByIdAsync), new { userId, targetId, serieId, id = registeredExercise.Id }, registeredExercise);
+                return CreatedAtRoute(nameof(GetExerciseStepByIdAsync), new { userId, targetId, serieId, id = registeredExercise.Id }, registeredExercise);
             }
             catch (Application.Exceptions.ApplicationException ex)
             {
@@ -71,8 +71,8 @@ namespace PocketGym.API.Controllers.v1
         }
 
 
-        [HttpGet("{userId}/target/{targetId}/serie/{serieId}/exercise/{id}", Name = nameof(GetExerciseByIdAsync))]
-        public async Task<IActionResult> GetExerciseByIdAsync([FromRoute] string userId, [FromRoute] string targetId,  [FromRoute] string serieId, [FromRoute] string id, [FromServices] IExerciseStepApplicationService service)
+        [HttpGet("{userId}/target/{targetId}/serie/{serieId}/exercise/{id}", Name = nameof(GetExerciseStepByIdAsync))]
+        public async Task<IActionResult> GetExerciseStepByIdAsync([FromRoute] string userId, [FromRoute] string targetId,  [FromRoute] string serieId, [FromRoute] string id, [FromServices] IExerciseStepApplicationService service)
         {
             if (!string.Equals(User.Identity.Name, userId))
             {

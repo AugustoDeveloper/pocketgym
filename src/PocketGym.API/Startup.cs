@@ -46,6 +46,7 @@ namespace PocketGym.API
             services.AddScoped<IUserApplicationService, UserApplicationService>();
             services.AddScoped<ISerieApplicationService, SerieApplicationService>();
             services.AddScoped<IExerciseStepApplicationService, ExerciseStepApplicationService>();
+            services.AddScoped<IExerciseApplicationService, ExerciseApplicationService>();
             services.AddScoped<ITargetApplicationService, TargetApplicationService>();
             services.AddScoped<IHealthCheckApplicationService, HealthCheckApplicationService>();
             
