@@ -20,67 +20,55 @@ namespace PocketGym.Application.Services
             this.userRepository = userRepository;
         }
 
-        public async Task<SerieDto> AddAsync(string userId, SerieDto serie)
+        public async Task<SerieDto> AddAsync(string userId, string targetId, SerieDto serie)
         {
             var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
+            var target = registeredUser.Targets.FirstOrDefault(t => t.Id == targetId);
 
-            if (registeredUser.Series.Any(s => s.Id == serie.Id))
+            if (target.Series.Any(s => s.Id == serie.Id))
             {
-                throw new ValueAlreadyRegisteredException(serie.Id);
+                throw new ValueAlreadyRegisteredException(serie.Id.ToString());
             }
 
-            var serieEntity = serie.ToEntity<Serie>(Mapper);
-            registeredUser.Series.Add(serieEntity);
+            var serieEntity = serie.ToEntity(Mapper);
+            target.Series.Add(serieEntity);
             await userRepository.UpdateAsync(registeredUser);
-            return serieEntity.ToDto<SerieDto>(Mapper);
+            return serieEntity.ToDto(Mapper);
         }
 
-        public async Task<bool> DeleteAsync(string userId, string id)
+        public async Task<bool> DeleteAsync(string userId, string targetId, string id)
         {
             var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
+            var target = registeredUser.Targets.FirstOrDefault(t => t.Id == targetId);
 
-            var serieToRemove = registeredUser.Series.FirstOrDefault(s => s.Id == id);
+            var serieToRemove = target.Series.FirstOrDefault(s => s.Id == id);
             
             if (serieToRemove == null)
             {
                 return false;
             }
 
-            registeredUser.Series.Remove(serieToRemove);
+            target.Series.Remove(serieToRemove);
 
             await userRepository.UpdateAsync(registeredUser);
 
             return true;
         }
 
-        public async Task<SerieDto> GetByIdAsync(string userId, string serieId)
+        public async Task<SerieDto> GetByIdAsync(string userId, string targetId, string serieId)
         {
             var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
-            return registeredUser.Series.FirstOrDefault(s => s.Id == serieId).ToDto<SerieDto>(Mapper);
+            var target = registeredUser.Targets.FirstOrDefault(t => t.Id == targetId);
+
+            return target.Series.FirstOrDefault(s => s.Id == serieId).ToDto(Mapper);
         }
 
-        public async Task<IEnumerable<SerieDto>> LoadAllByUserIdAsync(string currentUserId)
+        public async Task<IEnumerable<SerieDto>> LoadAllByUserIdAsync(string currentUserId, string targetId)
         {
             var registeredUser = await userRepository.GetByAsync(u => u.Id == currentUserId);
-            return registeredUser.Series.Select(s => s.ToDto<SerieDto>(Mapper)).ToArray();
-        }
+            var target = registeredUser.Targets.FirstOrDefault(t => t.Id == targetId);
 
-        public async Task<SerieDto> UpdateAsync(string userId, SerieDto serie)
-        {
-            var registeredUser = await userRepository.GetByAsync(u => u.Id == userId);
-
-            var serieToUpdate = registeredUser.Series.FirstOrDefault(s => s.Id == serie.Id);
-
-            if (serieToUpdate == null)
-            {
-                return null;
-            }
-
-            serieToUpdate.Title = serie.Title;
-            serieToUpdate.RestTimeBetweenExercisesInSeconds = serie.RestTimeBetweenExercisesInSeconds;
-            await userRepository.UpdateAsync(registeredUser);
-
-            return serieToUpdate.ToDto<SerieDto>(Mapper);
+            return target.Series.Select(s => s.ToDto(Mapper)).ToArray();
         }
     }
 }

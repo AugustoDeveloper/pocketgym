@@ -21,7 +21,35 @@ namespace PocketGym.Infrastructure.Repository.MongoDb.Extensions
                 cm.SetIgnoreExtraElements(true);
             });
 
+            BsonClassMap.RegisterClassMap<Target>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(s => s.Id);
+                cm.SetIgnoreExtraElements(true);
+            });
+
             BsonClassMap.RegisterClassMap<Serie>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(s => s.Id);
+                cm.SetIgnoreExtraElements(true);
+            });
+
+            BsonClassMap.RegisterClassMap<SingleExerciseStep>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(s => s.Id);
+                cm.SetIgnoreExtraElements(true);
+            });
+
+            BsonClassMap.RegisterClassMap<ConjugateExerciseStep>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(s => s.Id);
+                cm.SetIgnoreExtraElements(true);
+            });
+
+            BsonClassMap.RegisterClassMap<DropSetExerciseStep>(cm =>
             {
                 cm.AutoMap();
                 cm.MapIdMember(s => s.Id);
