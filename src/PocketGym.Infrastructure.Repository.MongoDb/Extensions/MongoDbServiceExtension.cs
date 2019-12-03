@@ -60,11 +60,12 @@ namespace PocketGym.Infrastructure.Repository.MongoDb.Extensions
             {
                 cm.AutoMap();
                 cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapIdMember(e => e.Id);
+                cm.MapIdMember(u => u.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
                 cm.SetIgnoreExtraElements(true);
             });
 
-            serviceCollection.AddTransient<IUserRepository>(v => new UserRepository(configuration["MongoDb:ConnectionString"], configuration["MongoDb:DatabaseName"], "users"));
+            serviceCollection.AddScoped<IUserRepository>(v => new UserRepository(configuration["MongoDb:ConnectionString"], configuration["MongoDb:DatabaseName"], "users"));
+            serviceCollection.AddScoped<IExerciseRepository>(v => new ExerciseRepository(configuration["MongoDb:ConnectionString"], configuration["MongoDb:DatabaseName"], "exercises"));
         }
     }
 }
